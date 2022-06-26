@@ -1,0 +1,59 @@
+body {
+    margin:0px;
+    font-family:sans-serif;
+    background-color: #FCDEE0;
+}
+#contenidor {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    min-height: 100vh;
+    min-height: -moz-available;
+    min-height: -webkit-fill-available;
+    min-height: fill-available;
+}
+#capçalera {
+    display: flex;
+    height: 8vh;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vh;
+    color: white;
+    background-color: #950E17;
+}
+.seccio {
+    display: none;
+    font-size: 4vh;
+    justify-content: center;
+    align-items: center; 
+}
+#seccio_0 {
+    display: flex; 
+    flex-direction: column;
+}
+#credencials{
+    margin: 5vh;
+    font-size: 2vh;
+    text-align: right;
+}
+.textos_registre {
+    max-width: 30vw;
+    font-size: 2vh;
+}
+.botons_registre {
+    font-size: 2vh;
+    padding: 1vh;
+}
+#menu {
+    display: flex;
+    height: 8vh;
+}
+.boto {
+    width: 100%;
+    font-size: 2vh;
+    color: white;
+    background-color: #950E17;
+}
+.material-icons {
+    font-size: 4vh !important;
+}
