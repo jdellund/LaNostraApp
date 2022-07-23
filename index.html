@@ -1,41 +1,54 @@
+<!DOCTYPE html>
 <html>
   <head>
     <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
-    <title>La nostra app</title>
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+    <title>La nostra webapp</title>
   </head>
   <body>
-    <div id="contenidor">
-      <div id="capçalera">
-        <span>La nostra app</span>
+    <div id="superior">
+      La nostra webapp
+    </div>
+<div id="seccio_0" class="seccio">
+  Inici de sessió
+  <div id="credencials">
+    <div>
+      <label for="nom_usuari">Nom d'usuari</label>
+      <input type="text" id="nom_usuari" class="textos_registre">
+    </div>
+    <div>
+      <label for="contrasenya">Contrasenya</label>        
+      <input type="password" id="contrasenya" class="textos_registre">
+    </div>
+  </div>  
+  <div id="botons_inici">
+    <button id="iniciar_sessio" class="boto_registre">Inicia sessió</button>
+    <button id="nou_usuari" class="boto_registre">Nou usuari</button>
+  </div>         
+</div>
+    <div id="seccio_1" class="seccio">Secció 1</div>
+    <div id="seccio_2" class="seccio">
+      <div id="div_foto" class="meitat">
+        <img id="foto" src="">
+        <span id="camera" class="material-icons-outlined">photo_camera</span>
       </div>
-      <div id="seccions">
-        <div id="seccio_0" class="seccio">
-          Inici de sessió
-          <div id="credencials">
-            <label for="nom_usuari">Nom d'usuari</label>
-            <input type="text" id="nom_usuari" name="nom_usuari" class="textos_registre" hint="Escriu el teu nom d'usuari"><br><br>
-            <label for="contrasenya">Contrasenya</label>
-            <input type="password" id="contrasenya" name="contrasenya" class="textos_registre" hint="Escriu una cntrasenya que puguis recordar"> 
-          </div>  
-          <div id="botons_inici">
-            <button id="iniciar_sessio" class="botons_registre" onclick="inici_sessio()">Iniciar sessió</button>
-            <button id="nou_usuari" class="botons_registre" onclick="nou_usuari()">Nou usuari</button>
-          </div>         
-        </div>
-        <div id="seccio_1" class="seccio">Secció 1</div>
-        <div id="seccio_2" class="seccio">Secció 2</div>
-        <div id="seccio_3" class="seccio">Secció 3</div>
-        <div id="seccio_4" class="seccio">Secció 4</div>
+      <div id="div_dades" class="meitat">
+        <label for="fitxer"><span id="boto_camera" class="material-icons-outlined boto_verd">camera</span></label>
+        <input type="file" accept="image/*" id="fitxer" capture="camera" />
+        <span id="desar" class="material-icons boto_verd" onclick="desa_foto()">save</span>
+        <canvas id="canvas"></canvas>
       </div>
-      <div id="menu">
-        <button id="boto_1" class="boto" onclick="canvi_seccio(1)"><span class="material-icons">home</span></button>
-        <button id="boto_2" class="boto" onclick="canvi_seccio(2)"><span class="material-icons">photo_camera</span></button>
-        <button id="boto_3" class="boto" onclick="canvi_seccio(3)"><span class="material-icons">face</span></button>
-        <button id="boto_4" class="boto" onclick="canvi_seccio(4)"><span class="material-icons">settings</span></button>
-        <button id="boto_5" class="boto" onclick="sortida()"><span class="material-icons">logout</span></button>
-      </div>
+    </div>
+    <div id="seccio_3" class="seccio">Secció 3</div>
+    <div id="seccio_4" class="seccio">Secció 4</div>
+    <div id="menu">
+      <button id="boto_1" class="boto_menu"><span class="icona material-icons">home</span></button>
+      <button id="boto_2" class="boto_menu"><span class="icona material-icons">photo_camera</span></button>
+      <button id="boto_3" class="boto_menu"><span class="icona material-icons">face</span></button>
+      <button id="boto_4" class="boto_menu"><span class="icona material-icons">settings</span></button>
+      <button id="boto_5" class="boto_menu"><span class="icona material-icons">logout</span></button>
     </div>
     <script src="index.js"></script>
   </body>

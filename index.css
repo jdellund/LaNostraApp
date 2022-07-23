@@ -1,59 +1,107 @@
+html { 
+    height: -webkit-fill-available;
+}
 body {
-    margin:0px;
-    font-family:sans-serif;
+    display:flex;
+    flex-direction: column;
+    min-height: 100vh;
+    min-height: 100svh;
+    min-height: -webkit-fill-available;
+    margin: 0px;
+    font-family: sans-serif;
     background-color: #FCDEE0;
 }
-#contenidor {
+#superior {
     display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    min-height: 100vh;
-    min-height: -moz-available;
-    min-height: -webkit-fill-available;
-    min-height: fill-available;
-}
-#capçalera {
-    display: flex;
-    height: 8vh;
+    flex: 5;
     justify-content: center;
     align-items: center;
-    font-size: 4vh;
+    font-size: 4vmax;
     color: white;
     background-color: #950E17;
 }
 .seccio {
     display: none;
-    font-size: 4vh;
-    justify-content: center;
-    align-items: center; 
+    flex: 90;
 }
-#seccio_0 {
+#seccio_2 {
     display: flex; 
     flex-direction: column;
 }
 #credencials{
-    margin: 5vh;
-    font-size: 2vh;
+    display: flex;
+    flex-direction: column;
+    margin: 5vmax;
+    font-size: 3vmax;
     text-align: right;
 }
 .textos_registre {
-    max-width: 30vw;
-    font-size: 2vh;
+    max-width: 20vmax;
+    margin-bottom: 2vmax;
+    font-size: 3vmax;
 }
-.botons_registre {
-    font-size: 2vh;
-    padding: 1vh;
+.boto_registre {
+    padding: 1vmax;
+    font-size: 3vmax;
 }
 #menu {
     display: flex;
-    height: 8vh;
+    flex: 5;
 }
-.boto {
-    width: 100%;
-    font-size: 2vh;
+.boto_menu {
+    flex: 1;
     color: white;
     background-color: #950E17;
 }
-.material-icons {
-    font-size: 4vh !important;
+.icona {
+    font-size: 4vmax !important;
+}
+.meitat {
+    display: flex;
+    align-items: center;
+}
+#div_foto {
+    flex:1;
+    justify-content: center;
+}
+#div_dades {
+    flex: 1;
+    justify-content: space-evenly;
+}
+#foto {
+    max-width: 70vmin;
+    max-height: 70vmin;
+}
+#camera {
+    font-size: 30vmin;
+    color: #950E17;
+}
+.boto_verd{
+    cursor: pointer;
+    font-size: 20vmin !important;
+    color: green;
+}
+#fitxer {
+    opacity: 0;
+    position: absolute;
+}
+#canvas, #desar {
+    display: none;
+}
+@media (orientation: landscape) {
+    body {
+        flex-direction: row;
+        flex-flow: row-reverse;
+    }
+    #superior {
+        display: none;
+    }
+    #menu {
+        flex-direction: column;
+        flex: 10;
+    }
+    #seccio_2 {
+        flex-direction: row;
+    }
+
 }
