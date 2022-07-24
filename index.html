@@ -24,31 +24,34 @@
     </div>
   </div>  
   <div id="botons_inici">
-    <button id="iniciar_sessio" class="boto_registre">Inicia sessió</button>
-    <button id="nou_usuari" class="boto_registre">Nou usuari</button>
+    <button id="iniciar_sessio" class="boto_registre" onclick="inici_sessio()">Inicia sessió</button>
+    <button id="nou_usuari" class="boto_registre" onclick="nou_usuari()">Nou usuari</button>
   </div>         
 </div>
-    <div id="seccio_1" class="seccio">Secció 1</div>
+    <div id="seccio_1" class="seccio">
+        Secció 1
+    </div>
     <div id="seccio_2" class="seccio">
-      <div id="div_foto" class="meitat">
-        <img id="foto" src="">
-        <span id="camera" class="material-icons-outlined">photo_camera</span>
+      <div id="div_foto">
+        <div id="foto_div"><img id="foto" src=""><span id="camera" class="material-icons-outlined">photo_camera</span></div>
       </div>
-      <div id="div_dades" class="meitat">
-        <label for="fitxer"><span id="boto_camera" class="material-icons-outlined boto_verd">camera</span></label>
-        <input type="file" accept="image/*" id="fitxer" capture="camera" />
-        <span id="desar" class="material-icons boto_verd" onclick="desa_foto()">save</span>
-        <canvas id="canvas"></canvas>
+      <div id="div_dades">
+        <div id="dades_div">
+          <label for="fitxer"><span id="boto_camera" class="material-icons-outlined boto_verd">camera</span></label>
+          <input type="file" accept="image/*" id="fitxer" capture="camera" />
+          <span id="desar" class="material-icons boto_verd" onclick="desa_foto()">save</span>
+          <canvas id="canvas"></canvas>
+        </div>
       </div>
     </div>
     <div id="seccio_3" class="seccio">Secció 3</div>
     <div id="seccio_4" class="seccio">Secció 4</div>
     <div id="menu">
-      <button id="boto_1" class="boto_menu"><span class="icona material-icons">home</span></button>
-      <button id="boto_2" class="boto_menu"><span class="icona material-icons">photo_camera</span></button>
-      <button id="boto_3" class="boto_menu"><span class="icona material-icons">face</span></button>
-      <button id="boto_4" class="boto_menu"><span class="icona material-icons">settings</span></button>
-      <button id="boto_5" class="boto_menu"><span class="icona material-icons">logout</span></button>
+      <button id="boto_1" class="boto_menu" onclick="canvi_seccio(1)"><span class="icona material-icons">home</span></button>
+      <button id="boto_2" class="boto_menu" onclick="canvi_seccio(2)"><span class="icona material-icons">photo_camera</span></button>
+      <button id="boto_3" class="boto_menu" onclick="canvi_seccio(3)"><span class="icona material-icons">face</span></button>
+      <button id="boto_4" class="boto_menu" onclick="canvi_seccio(4)"><span class="icona material-icons">settings</span></button>
+      <button id="boto_5" class="boto_menu" onclick="sortida()""><span class="icona material-icons">logout</span></button>
     </div>
     <script src="index.js"></script>
   </body>

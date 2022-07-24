@@ -17,18 +17,16 @@ function readURL(input) {
       let img = new Image;
       img.src = URL.createObjectURL(input.files[0]);
       img.onload = function() {
-          let iw=img.width;
-          let ih=img.height;
-          let scale=Math.min((midaFoto/iw),(midaFoto/ih));
-          let iwScaled=iw*scale;
-          let ihScaled=ih*scale;
-          canvas.width=iwScaled;
-          canvas.height=ihScaled;
+          let scale = Math.min((midaFoto/img.width),(midaFoto/img.height));
+          let iwScaled = img.width*scale;
+          let ihScaled = img.height*scale;
+          canvas.width = iwScaled;
+          canvas.height = ihScaled;
           ctx.drawImage(img,0,0,iwScaled,ihScaled);
           canvas.style.display = "none";
           document.getElementById("camera").style.display = "none";
           document.getElementById("foto").src = canvas.toDataURL("image/jpeg",0.5);
-          document.getElementById("desar").style.display = "block";
+          document.getElementById("desar").style.display = "unset";
           foto_feta = canvas.toDataURL("image/jpeg",0.5);
       }
     } else {
@@ -62,9 +60,11 @@ function canvi_seccio(num_boto) {
 }
 
 function sortida() {
-    let vull_sortir = window.confirm("Vols tancar la sessió?");
-    if (vull_sortir) {
-        location.reload();
+    if (usuari) {
+        let vull_sortir = window.confirm("Vols tancar la sessió?");
+        if (vull_sortir) {
+            location.reload();
+        }
     }
 }
 

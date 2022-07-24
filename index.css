@@ -23,10 +23,22 @@ body {
 .seccio {
     display: none;
     flex: 90;
+    flex-direction: column;
+}
+#seccio_0 {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    font-size: 4vmax;
+}
+#seccio_1 {
+    justify-content: center;
+    align-items: center;
+    font-size: 4vmax;
 }
 #seccio_2 {
-    display: flex; 
     flex-direction: column;
+    padding: 1vmin;
 }
 #credencials{
     display: flex;
@@ -49,24 +61,23 @@ body {
     flex: 5;
 }
 .boto_menu {
-    flex: 1;
     color: white;
     background-color: #950E17;
+    flex: 1;
 }
 .icona {
     font-size: 4vmax !important;
 }
-.meitat {
-    display: flex;
-    align-items: center;
-}
 #div_foto {
-    flex:1;
+    display: flex;
+    flex: 1;
     justify-content: center;
 }
 #div_dades {
-    flex: 1;
+    display: flex;
     justify-content: space-evenly;
+    flex: 1;
+    align-items: center;
 }
 #foto {
     max-width: 70vmin;
@@ -84,9 +95,16 @@ body {
 #fitxer {
     opacity: 0;
     position: absolute;
+    width: 0;
 }
 #canvas, #desar {
     display: none;
+}
+#foto_div {
+    height: 0;
+}
+#dades_div {
+    height: 0;
 }
 @media (orientation: landscape) {
     body {
@@ -103,5 +121,20 @@ body {
     #seccio_2 {
         flex-direction: row;
     }
-
+    #div_foto {
+        flex-direction: column;
+        align-items: center;
+        margin: auto;
+    }
+    #foto_div {
+        height: auto;
+    }
+    #div_dades {
+        flex-direction: column;
+    }
+    #dades_div {
+        display: flex;
+        flex-direction: column;
+        height:auto;
+    }
 }
