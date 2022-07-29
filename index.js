@@ -3,7 +3,7 @@ let validat = false;
 let usuari, contrasenya;
 let storage = window.localStorage;
 let scriptURL = "https://script.google.com/macros/s/AKfycbwO6FnBnaBmxrzPRyLDhV8D6pW7Pe6V8-SYIdSHZXMmg8JqjJwQz8H8zA8wl3U6u2pW/exec"
-let foto_feta;
+let foto_feta, num_foto, obs;
 
 window.onload = () => {    
     usuari = storage.getItem("usuari");
@@ -16,7 +16,7 @@ window.onload = () => {
             let db = event.target.result;    
             db.createObjectStore("Fotos", {keyPath: "ID", autoIncrement:true});
         }
-        storage.setItem("database","sí");
+        storage.setItem("database","true");
     }
     document.getElementById("fitxer").addEventListener("change", function(event) {
         carrega_imatge(this);
@@ -42,8 +42,6 @@ function carrega_imatge(input) {
             document.getElementById("desar").style.display = "unset";
             foto_feta = canvas.toDataURL("image/jpeg",0.5);
         }
-    } else {
-      console.log("Error: no s'ha obtingut cap imatge.");
     }
 }
 
@@ -59,9 +57,59 @@ function desa_foto() {
         let request = obsObjStore.add(nou_registre);
         request.onsuccess = () => {
             document.getElementById("desar").style.display = "none";
-            window.alert("La foto s'ha desat correctament.")
+            alert("La foto s'ha desat correctament.")
         };
     };
+}
+
+function mostra_foto(num) {
+    num_foto = num;
+    let canvas = document.getElementById("canvas");
+    let ctx = canvas.getContext("2d");
+    let img = new Image;
+    if (num == 0) {
+        img.src = document.getElementById("foto").src;
+        document.getElementById("seccio_2").style.display = "none";
+    }
+    else {
+        img.src = obs[num-1]["Foto"];
+        document.getElementById("seccio_3").style.display = "none";
+    }
+    img.onload = () => {
+        let scale = Math.min((midaFoto/img.width),(midaFoto/img.height))
+        let iwScaled = img.width * scale;
+        let ihScaled = img.height * scale;
+        if (img.width > img.height) {
+            canvas.width = ihScaled;
+            canvas.height = iwScaled;
+            ctx.translate(ihScaled, 0);
+            ctx.rotate(Math.PI / 2);
+        } else {
+            canvas.width = iwScaled;
+            canvas.height = ihScaled;
+        }
+        ctx.drawImage(img,0,0,iwScaled,ihScaled);
+        canvas.style.display = "none";
+        document.getElementById("foto_gran").src = canvas.toDataURL("image/jpeg",0.5);
+    }
+    document.getElementById("superior").classList.add("ocult");
+    document.getElementById("menu").style.display = "none";
+    document.getElementById("div_gran").style.display = "flex";
+}
+
+function retorna_seccio() {
+    /*if(window.innerHeight > window.innerWidth){
+        console.log("portrait");
+        document.getElementById("superior").style.display = "flex";
+    }*/
+    document.getElementById("superior").classList.remove("ocult");
+    document.getElementById("menu").style.display = "flex";
+    document.getElementById("div_gran").style.display = "none";
+    if (num_foto == 0) {
+        document.getElementById("seccio_2").style.display = "flex";
+    } else {
+        document.getElementById("seccio_3").style.display = "flex";
+    }
 }
 
 function canvi_seccio(num_boto) {
@@ -83,6 +131,9 @@ function canvi_seccio(num_boto) {
             }
         }
     }
+    if (num_boto == 3) {
+        omple_llista();
+    }
 }
 
 function sortida() {
@@ -99,6 +150,11 @@ function nou_usuari() {
     usuari = document.getElementById("nom_usuari").value;
     contrasenya = document.getElementById("contrasenya").value;
     let consulta_1 = scriptURL + "?query=select&where=usuari&is=" + usuari;
+
+    let loader = document.getElementById("loader");
+    loader.style.display = "unset";
+    loader.style.animationPlayState = "running";
+
     fetch(consulta_1)
         .then(resposta => resposta.json())
         .then(resposta => {
@@ -107,17 +163,19 @@ function nou_usuari() {
                 fetch(consulta_2)
                     .then(resposta => {
                         if (resposta.ok) {
-                            window.alert("S'ha completat el registre d'usuari.")                          
+                            alert("S'ha completat el registre d'usuari.")                          
                             inicia_sessio();
                         }
                         else {
-                            window.alert("S'ha produït un error en el registre d'usuari.")
+                            alert("S'ha produït un error en el registre d'usuari.")
                         }
                     })
             } 
             else {
-                window.alert("Ja existeix un usuari amb aquest nom.");
+                alert("Ja existeix un usuari amb aquest nom.");
             }
+            loader.style.animationPlayState = "paused";
+            loader.style.display = "none";
         });
 }
 
@@ -125,14 +183,21 @@ function inici_sessio() {
     usuari = document.getElementById("nom_usuari").value;
     contrasenya = document.getElementById("contrasenya").value;
     let consulta = scriptURL + "?query=select&from=usuaris&where=usuari&is=" + usuari + "&and=contrasenya&equal=" + contrasenya;
+
+    let loader = document.getElementById("loader");
+    loader.style.display = "unset";
+    loader.style.animationPlayState = "running";
+
     fetch(consulta)
         .then(resposta => resposta.json())
         .then(resposta => {
+            loader.style.animationPlayState = "paused";
+            loader.style.display = "none";
             if(resposta.length == 0) {
-                window.alert("El nom d'usuari o la contrasenya no són correctes.");
+                alert("El nom d'usuari o la contrasenya no són correctes.");
             }
             else {
-                window.alert("S'ha iniciat correctament la sessió.");
+                alert("S'ha iniciat correctament la sessió.");
                 inicia_sessio();
             }
         });
@@ -143,6 +208,25 @@ function inicia_sessio() {
     storage.setItem("usuari", usuari);
     document.getElementById("seccio_0").style.display = "none";
     canvi_seccio(1); 
+}
+
+function omple_llista() {
+    let llista = '';
+    indexedDB.open("Dades").onsuccess = function(event) {
+        event.target.result.transaction(["Fotos"], "readonly").objectStore("Fotos").getAll().onsuccess = function(event) {
+            obs = event.target.result;
+            for (i in obs) {
+                llista+= '<div class="div_fila" onclick="mostra_foto(';
+                llista+= parseInt(i) + 1;
+                llista+= ')"><div><img src="';
+                llista+= obs[i]["Foto"];
+                llista+= '" /></div><span>'; 
+                llista+= obs[i]["Data"];
+                llista+= '</span></div>';           
+            }
+            document.getElementById("llista_fotos").innerHTML = llista;
+        }
+    }
 }
 
 function data_hora(date) {
@@ -157,5 +241,5 @@ function data_hora(date) {
     if (hora.length < 2) hora = '0' + hora;
     if (minut.length < 2) minut = '0' + minut;
     if (segon.length < 2) segon = '0' + segon;
-    return any + '-' + mes + '-' + dia + '_' + hora + ':' + minut + ':' + segon;
+    return dia + '/' + mes + '/' + any + ' - ' + hora + ':' + minut + ':' + segon;
 }
