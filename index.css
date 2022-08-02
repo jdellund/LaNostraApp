@@ -4,6 +4,7 @@ html {
 body {
     display:flex;
     flex-direction: column;
+    justify-content: space-between;
     min-height: 100vh;
     min-height: 100svh;
     min-height: -webkit-fill-available;
@@ -20,12 +21,23 @@ body {
     color: white;
     background-color: #950E17;
 }
+#splash {
+    flex: 1;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #950E17;
+    background-color: #FCDEE0;
+    font-size: 5vmax;
+    max-height: 100vh;
+    max-height: 100svh;
+}
 .seccio {
     flex: 1;
     display: none;
 }
 #seccio_0 {
-    display: flex;
+    display: none;
     flex-direction: column;
     justify-content: center;
     align-items: center;
@@ -36,9 +48,14 @@ body {
     align-items: center;
     font-size: 4vmax;
 }
-#seccio_2, #seccio_3 {
+#seccio_2 {
     flex-direction: column;
 }
+#seccio_3 {
+    flex-direction: column;
+    justify-content: space-around;
+}
+
 #inici_sessio {
     display: flex;
     align-items: center;
@@ -50,7 +67,7 @@ body {
     font-size: 3vmax;
     margin: 5vmin;
 }
-#credencials div:nth-child(1) {
+#credencials div {
     margin-bottom: 1vmin;
 }
 #credencials input {
@@ -68,25 +85,32 @@ body {
 }
 #menu {
     height: 8vmax;
-    display: flex;
+    display: none;
 }
-#menu button {
+#menu span{
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
     color: white;
     background-color: #950E17;
-    cursor: pointer;
-}
-#menu span {
     font-size: 5vmax !important;
+    cursor: pointer;
 }
 #div_foto {
     flex: 1;
     display: flex;
     justify-content: center;
     align-items: center;
+}
+#icona_camera {
+    font-size: 40vmin;
+    color: #950E17;
+}
+#foto {
+    max-width: 60vmin;
+    max-height: 60vmin;
+    cursor: pointer;
 }
 #div_control {
     height: 25vmax;
@@ -99,56 +123,66 @@ body {
     font-size: 20vmin !important;
     color: green;
 }
-#foto {
-    max-width: 70vmin;
-    max-height: 70vmin;
-    cursor: pointer;
-}
-#camera {
-    font-size: 40vmin;
-    color: #950E17;
-}
-#fitxer {
+#obturador {
     position: absolute;
     width: 0;
     opacity: 0;
 }
-#canvas, #desar {
+#canvas, #desa {
     display: none;
 }
 #llista_titol {
     display: flex;
     justify-content: center;
     align-items: center;
-    height: 5vmax;
     text-align: center;
     font-weight: bold;
 }
+#llista_titol span {
+    font-size: 4vmax;
+    color:#950E17;
+}
 #llista_titol span:nth-child(1) {
-    flex: 1;
+    flex: 2;
 }
 #llista_titol span:nth-child(2) {
     flex: 3;
 }
+#llista_titol span:nth-child(3) {
+    flex: 1;
+}
 #llista_fotos {
-    height: 75vmax;
+    height: 70vmax;
     overflow-y: scroll;
 }
-.div_fila {
+::-webkit-scrollbar {
+    opacity: 0;
+    width: 0;
+    display: none;
+    background-color: transparent;
+  }
+.llista_fila {
     display: flex;
     text-align: center;
     align-items: center;
 }
-.div_fila div {
-    flex: 1;
+.llista_fila div {
+    flex: 2;
 }
-.div_fila img {
+.llista_fila img {
     width: 10vmax;
     height: 10vmax;
     cursor: pointer;
 }
-.div_fila span {
+.llista_fila span:nth-child(2) {
     flex: 3;
+    font-size: 2vmax;
+}
+.llista_fila span:nth-child(3) {
+    flex: 1;
+    color: #950E17;
+    font-size: 4vmax !important;
+    cursor: pointer;
 }
 #div_gran {
     display: none;
@@ -198,7 +232,7 @@ body {
     }
     #menu {
         flex-direction: column;
-        width: 16vmax;
+        width: 8vmax;
         height: auto;
     }
     #seccio_2 {
@@ -212,15 +246,16 @@ body {
         height: auto;
         flex-direction: column;
     }
-    #llista_titol {
-        height: 5vmin;
-    }
     #llista_fotos {
-        height: 90vmin;
+        height: 70vmin;
     }
-    .div_fila img {
+    .llista_fila img {
         width: 10vmin;
         height: 10vmin;
+    }
+    #div_gran {
+        max-height: 100vh;
+        max-height: 100svh;
     }
     #foto_gran {
         transform: rotate(-90deg);

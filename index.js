@@ -1,118 +1,134 @@
-const midaFoto = 1000;
+let pantalla_carregada = false;
+let crono_splash = false;
 let validat = false;
-let usuari, contrasenya;
+let usuari, contrasenya, seccio_origen;
 let storage = window.localStorage;
-let scriptURL = "https://script.google.com/macros/s/AKfycbwO6FnBnaBmxrzPRyLDhV8D6pW7Pe6V8-SYIdSHZXMmg8JqjJwQz8H8zA8wl3U6u2pW/exec"
-let foto_feta, num_foto, obs;
+let scriptURL = "https://script.google.com/macros/s/AKfycbwO6FnBnaBmxrzPRyLDhV8D6pW7Pe6V8-SYIdSHZXMmg8JqjJwQz8H8zA8wl3U6u2pW/exec";
 
-window.onload = () => {    
+window.onload = () => { 
+    let base_de_dades = storage.getItem("base_de_dades");   
+    if(base_de_dades == null) {
+        indexedDB.open("Dades").onupgradeneeded = event => {   
+            event.target.result.createObjectStore("Fotos", {keyPath: "ID", autoIncrement:true}).createIndex('Usuari_index', 'Usuari');;
+        }
+        storage.setItem("base_de_dades","ok");
+    }
+    document.getElementById("obturador").addEventListener("change", function() {
+        if(this.files[0] != undefined) {
+            let canvas = document.getElementById("canvas");
+            let context = canvas.getContext("2d");
+            let imatge = new Image;
+            imatge.src = URL.createObjectURL(this.files[0]);
+            imatge.onload = () => {
+                canvas.width = imatge.width;
+                canvas.height = imatge.height;                
+                context.drawImage(imatge,0,0,imatge.width,imatge.height);
+                document.getElementById("foto").src = canvas.toDataURL("image/jpeg");
+                document.getElementById("icona_camera").style.display = "none";
+                document.getElementById("desa").style.display = "unset";
+            }
+        }
+    });
+    pantalla_carregada = true;
+    if (crono_splash) {
+        inici();
+    }
+}
+
+setTimeout(() => {
+    crono_splash = true;
+    if (pantalla_carregada) {
+        inici();
+    }
+}, "1000")
+
+function inici() {
+    document.getElementById("splash").style.display = "none";
+    document.getElementById("superior").classList.remove("ocult");
+    document.getElementById("menu").style.display = "flex";
     usuari = storage.getItem("usuari");
-    let stringDatabase = storage.getItem("database");
     if (usuari != "" && usuari != null) {
         inicia_sessio();
+    } else {
+        document.getElementById("seccio_0").style.display = "flex";
     }
-    if(stringDatabase == null) {
-        indexedDB.open("Dades").onupgradeneeded = event => { 
-            let db = event.target.result;    
-            db.createObjectStore("Fotos", {keyPath: "ID", autoIncrement:true});
-        }
-        storage.setItem("database","true");
-    }
-    document.getElementById("fitxer").addEventListener("change", function(event) {
-        carrega_imatge(this);
-    });
 }
 
-function carrega_imatge(input) { 
-    if(input.files[0] != undefined) {
-        let canvas = document.getElementById("canvas");
-        let ctx = canvas.getContext("2d");
-        let img = new Image;
-        img.src = URL.createObjectURL(input.files[0]);
-        img.onload = () => {
-            let scale = Math.min((midaFoto/img.width),(midaFoto/img.height));
-            let iwScaled = img.width * scale;
-            let ihScaled = img.height * scale;
-            canvas.width = iwScaled;
-            canvas.height = ihScaled;
-            ctx.drawImage(img,0,0,iwScaled,ihScaled);
-            canvas.style.display = "none";
-            document.getElementById("camera").style.display = "none";
-            document.getElementById("foto").src = canvas.toDataURL("image/jpeg",0.5);
-            document.getElementById("desar").style.display = "unset";
-            foto_feta = canvas.toDataURL("image/jpeg",0.5);
-        }
-    }
-}
 
 function desa_foto() {
     let nou_registre = {
         Usuari: usuari,
         Data: data_hora(new Date(Date.now())),
-        Foto: foto_feta
+        Foto: document.getElementById("foto").src
     };
-    indexedDB.open("Dades").onsuccess = event => { 
-        let db = event.target.result;    
-        let obsObjStore = db.transaction("Fotos", "readwrite").objectStore("Fotos");
-        let request = obsObjStore.add(nou_registre);
-        request.onsuccess = () => {
-            document.getElementById("desar").style.display = "none";
-            alert("La foto s'ha desat correctament.")
+    indexedDB.open("Dades").onsuccess = event => {   
+        event.target.result.transaction("Fotos", "readwrite").objectStore("Fotos").add(nou_registre).onsuccess = () => {
+            document.getElementById("desa").style.display = "none";
+            alert("La foto s'ha desat correctament.");
         };
     };
 }
 
-function mostra_foto(num) {
-    num_foto = num;
+function mostra_foto(id) {
     let canvas = document.getElementById("canvas");
-    let ctx = canvas.getContext("2d");
-    let img = new Image;
-    if (num == 0) {
-        img.src = document.getElementById("foto").src;
+    let context = canvas.getContext("2d");
+    let imatge = new Image;
+    if (id == 0) {
+        seccio_origen = 2;
         document.getElementById("seccio_2").style.display = "none";
+        imatge.src = document.getElementById("foto").src;
     }
     else {
-        img.src = obs[num-1]["Foto"];
-        document.getElementById("seccio_3").style.display = "none";
-    }
-    img.onload = () => {
-        let scale = Math.min((midaFoto/img.width),(midaFoto/img.height))
-        let iwScaled = img.width * scale;
-        let ihScaled = img.height * scale;
-        if (img.width > img.height) {
-            canvas.width = ihScaled;
-            canvas.height = iwScaled;
-            ctx.translate(ihScaled, 0);
-            ctx.rotate(Math.PI / 2);
-        } else {
-            canvas.width = iwScaled;
-            canvas.height = ihScaled;
+        seccio_origen = 3;
+        indexedDB.open("Dades").onsuccess = event => {
+            event.target.result.transaction(["Fotos"], "readonly").objectStore("Fotos").get(id).onsuccess = event => {
+                document.getElementById("seccio_3").style.display = "none";
+                imatge.src = event.target.result["Foto"];
+            }
         }
-        ctx.drawImage(img,0,0,iwScaled,ihScaled);
-        canvas.style.display = "none";
-        document.getElementById("foto_gran").src = canvas.toDataURL("image/jpeg",0.5);
+    }
+    imatge.onload = () => {
+        if (imatge.width > imatge.height) {
+            canvas.width = imatge.height;
+            canvas.height = imatge.width;
+            context.translate(imatge.height, 0);
+            context.rotate(Math.PI / 2);
+        } else {
+            canvas.width = imatge.width;
+            canvas.height = imatge.height;
+        }
+        context.drawImage(imatge,0,0,imatge.width,imatge.height);
+        document.getElementById("foto_gran").src = canvas.toDataURL("image/jpeg", 0.5);
     }
     document.getElementById("superior").classList.add("ocult");
     document.getElementById("menu").style.display = "none";
     document.getElementById("div_gran").style.display = "flex";
 }
 
-function retorna_seccio() {
-    /*if(window.innerHeight > window.innerWidth){
-        console.log("portrait");
-        document.getElementById("superior").style.display = "flex";
-    }*/
+function esborra_foto(id) {
+    let vull_esborrar = window.confirm("Vols esborrar la foto?");
+    if (vull_esborrar) {
+        indexedDB.open("Dades").onsuccess = event => {   
+                event.target.result.transaction("Fotos", "readwrite").objectStore("Fotos").delete(id).onsuccess = () => {
+                alert("La foto s'ha esborrat.");
+                canvia_seccio(3);
+            };
+        };
+    }
+}
+
+function retorn_a_seccio() {
     document.getElementById("superior").classList.remove("ocult");
     document.getElementById("menu").style.display = "flex";
     document.getElementById("div_gran").style.display = "none";
-    if (num_foto == 0) {
+    if (seccio_origen == 2) {
         document.getElementById("seccio_2").style.display = "flex";
     } else {
         document.getElementById("seccio_3").style.display = "flex";
     }
 }
 
-function canvi_seccio(num_boto) {
+function canvia_seccio(num_boto) {
     if (validat) {
         const menu = document.getElementById("menu");
         const num_botons = menu.children.length;
@@ -163,11 +179,11 @@ function nou_usuari() {
                 fetch(consulta_2)
                     .then(resposta => {
                         if (resposta.ok) {
-                            alert("S'ha completat el registre d'usuari.")                          
+                            alert("S'ha completat el registre d'usuari.");                          
                             inicia_sessio();
                         }
                         else {
-                            alert("S'ha produït un error en el registre d'usuari.")
+                            alert("S'ha produït un error en el registre d'usuari.");
                         }
                     })
             } 
@@ -207,22 +223,24 @@ function inicia_sessio() {
     validat = true;
     storage.setItem("usuari", usuari);
     document.getElementById("seccio_0").style.display = "none";
-    canvi_seccio(1); 
+    canvia_seccio(1); 
 }
 
 function omple_llista() {
     let llista = '';
-    indexedDB.open("Dades").onsuccess = function(event) {
-        event.target.result.transaction(["Fotos"], "readonly").objectStore("Fotos").getAll().onsuccess = function(event) {
-            obs = event.target.result;
-            for (i in obs) {
-                llista+= '<div class="div_fila" onclick="mostra_foto(';
-                llista+= parseInt(i) + 1;
-                llista+= ')"><div><img src="';
-                llista+= obs[i]["Foto"];
-                llista+= '" /></div><span>'; 
-                llista+= obs[i]["Data"];
-                llista+= '</span></div>';           
+    indexedDB.open("Dades").onsuccess = event => {
+        event.target.result.transaction(["Fotos"], "readonly").objectStore("Fotos").index("Usuari_index").getAll(usuari).onsuccess = event => {
+            dades = event.target.result;
+            for (i in dades) {
+                llista+= '<div class="llista_fila" class="centrat"><div><img src="';
+                llista+= dades[i]["Foto"];
+                llista+= '" onclick="mostra_foto(';
+                llista+= dades[i]["ID"];
+                llista+= ')" /></div><span>'; 
+                llista+= dades[i]["Data"];
+                llista+= '</span><span class="material-icons" onclick="esborra_foto(';
+                llista+= dades[i]["ID"];
+                llista+= ')">delete</span></div>';         
             }
             document.getElementById("llista_fotos").innerHTML = llista;
         }

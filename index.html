@@ -1,14 +1,21 @@
 <!DOCTYPE html>
-<html>
+<html lang="ca">
   <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="La nostra webapp.">
+    <link rel="preload" href="https://fonts.gstatic.com/s/materialicons/v135/flUhRq6tzZclQEJ-Vdg-IuiaDsNc.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="preload" href="https://fonts.gstatic.com/s/materialicons/v135/flUhRq6tzZclQEJ-Vdg-IuiaDsNcIhQ8tQ.woff2" as="font" type="font/woff2" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons">
     <link rel="stylesheet" href="index.css">
-    <link rel="stylesheet" href="https://fonts.googleapis.com/icon?family=Material+Icons|Material+Icons+Outlined">
+    
     <title>La nostra webapp</title>
   </head>
   <body>
-    <div id="superior">
+    <div id="superior" class="ocult">
+      La nostra webapp
+    </div>
+    <div id="splash">
       La nostra webapp
     </div>
     <div id="seccio_0" class="seccio">
@@ -34,34 +41,36 @@
     <div id="seccio_2" class="seccio">
       <div id="div_foto">
         <img id="foto" onclick="mostra_foto(0)">
-        <span id="camera" class="material-icons-outlined">photo</span>
+        <span id="icona_camera" class="material-icons">photo</span>
       </div>
       <div id="div_control">
-          <label for="fitxer">
-            <span class="material-icons-outlined">camera</span>
+          <label for="obturador">
+            <span class="material-icons">camera</span>
           </label>
-          <input type="file" accept="image/*" id="fitxer" capture="camera" />
-          <span id="desar" class="material-icons" onclick="desa_foto()">save</span>
+          <input type="file" accept="image/*" id="obturador" capture="camera" />
+          <span id="desa" class="material-icons" onclick="desa_foto()">done</span>
       </div>
     </div>
     <div id="seccio_3" class="seccio">
       <div id="llista_titol">
-        <span>FOTO</span><span>DATA</span>       
+        <span class="material-icons">image</span>
+        <span class="material-icons">calendar_month</span>
+        <span class="material-icons">delete</span>       
       </div>
       <div id="llista_fotos">
       </div>
     </div>
     <div id="seccio_4" class="seccio">Secció 4</div>
-    <div id="menu">
-      <button id="boto_1" onclick="canvi_seccio(1)"><span class="material-icons">home</span></button>
-      <button id="boto_2" onclick="canvi_seccio(2)"><span class="material-icons">camera</span></button>
-      <button id="boto_3" onclick="canvi_seccio(3)"><span class="material-icons">image</span></button>
-      <button id="boto_4" onclick="canvi_seccio(4)"><span class="material-icons">settings</span></button>
-      <button id="boto_5" onclick="sortida()""><span class="material-icons">logout</span></button>
+    <div id="menu">      
+      <span id="boto_1" class="material-icons" onclick="canvia_seccio(1)">home</span>     
+      <span id="boto_2" class="material-icons" onclick="canvia_seccio(2)">camera</span>
+      <span id="boto_3" class="material-icons" onclick="canvia_seccio(3)">image</span>
+      <span id="boto_4" class="material-icons" onclick="canvia_seccio(4)">settings</span>
+      <span class="material-icons" onclick="sortida()">logout</span>
     </div>
     <canvas id="canvas"></canvas>
     <div id="div_gran">
-      <img id="foto_gran" onclick="retorna_seccio()" />
+      <img id="foto_gran" onclick="retorn_a_seccio()" />
     </div>
     <div id="loader"></div>
     <script src="index.js"></script>
